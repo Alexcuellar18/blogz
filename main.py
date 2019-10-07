@@ -31,6 +31,20 @@ def index():
 
   return render_template('blog.html', blogs=blogs)
 
+def empty_title(title):
+
+  if len(title) > 1:
+    return False
+  else:
+    return True
+
+def empty_post(post):
+  
+  if len(post) > 1:
+    return False
+  else:
+    return True
+
 
 @app.route('/newpost', methods=['POST','GET'])
 def newpost():
@@ -40,13 +54,20 @@ def newpost():
     blog_title = request.form['blog_title']
     blog_post = request.form['blog_post']
     blog_entry = Blog(blog_title,blog_post)
-    db.session.add(blog_entry)
-    db.session.commit()
-    blogs = Blog.query.filter_by(id=blog_entry.id).first()
+    if empty_title(blog_title) == True:
+      flash("The title of your post can not be empty.",'error')
+      return render_template('newpost.html', blog_entry=blog_entry)
+    elif empty_post(blog_post) == True:
+      flash("Your blog post can not be empty.", 'error')
+      return render_template('newpost.html', blog_title=blog_title)
+
+    else:
+      db.session.add(blog_entry)
+      db.session.commit()
+      blogs = Blog.query.filter_by(id=blog_entry.id).first()
     return redirect('/blog?id=' + str(blog_entry.id))
   else:
     return render_template('newpost.html')
-
 
 
 if __name__=='__main__':
