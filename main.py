@@ -54,6 +54,9 @@ def newpost():
     blog_title = request.form['blog_title']
     blog_post = request.form['blog_post']
     blog_entry = Blog(blog_title,blog_post)
+    if empty_title(blog_title) == True and empty_post(blog_post) == True:
+      flash("You need to enter something! Both fields can not be blank",'error')
+      return render_template('newpost.html', blog_entry=blog_entry)
     if empty_title(blog_title) == True:
       flash("The title of your post can not be empty.",'error')
       return render_template('newpost.html', blog_entry=blog_entry)
