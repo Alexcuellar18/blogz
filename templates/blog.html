@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{header}}</h1>
+    <h1>All Blog Posts</h1>
 
   
 
@@ -9,7 +9,15 @@
   {% for blog in blogs %}
   <h2><a href='/blog?id={{blog.id}}'><u>{{blog.title}}</a></h2></u>
   {{blog.blog}}
+  {% for user in users%}
+    {% if user.id == blog.owner_id%}
+  <p class="post-author">
+    Written by:
+    <a href="/blog?user={{user.id}}">{{user.email}}</a>
+  </p>
   <hr>
+    {% endif%}
+    {% endfor%}
   {% endfor %}
         
     

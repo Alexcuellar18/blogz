@@ -10,10 +10,21 @@
     </head>
 <body style="background-color: rgb(139, 139, 141)">
         <div style='display: inline-block'>
-        <a href="/blog">Main Blog Page</a>
+        <a href="/">Home</a>
+        <a href='/blog'>All Blogs</a>
         <a href='/newpost'>Add a Blog Entry</a>
 
         </div>
+        <div style='float: right'>
+            {% if 'user' in session %}
+              {{ session['user'] }}
+              <form action="/logout" method="post" id='logout'>
+                <input type="submit" value="Log Out" />
+              </form>
+            {% else %}
+              <a href="login">login</a> | <a href="register">register</a>
+            {% endif %}
+          </div>
 
         {% with messages= get_flashed_messages(with_categories=True) %}
             <ul>
